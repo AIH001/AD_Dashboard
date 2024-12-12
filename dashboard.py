@@ -3,38 +3,44 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import FunctionTransformer
-from sklearn.pipeline import Pipeline
+
 
 
 # Load Data
 data = pd.read_csv("advertising_sales.csv")
 
-
 # Sidebar Navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Select Page", ["Overview", "Ad Performance", "Predict Sales", "Download Reports"])
+page = st.sidebar.radio("Select Page", ["Overview", "Ad Performance", "Predict Sales", "Report"])
 
-# 1. Overview
-if page == "Overview":
-    st.title("Ad Performance Analytics Dashboard")
-    st.subheader("Dataset Summary")
-    st.write(data.head())
-
-    # Key statistics
-    st.subheader("Key Statistics")
-    st.write(data.describe())
-
-    # KPIs
-    total_spend = data[['TV Ad Budget ($)', 'Radio Ad Budget ($)', 'Newspaper Ad Budget ($)']].sum().sum()
-    avg_sales = data['Sales ($)'].mean()
+# KPIs
+with st.sidebar:
+    total_spend = data[['TV Ad Budget ($)',
+                        'Radio Ad Budget ($)', 'Newspaper Ad Budget ($)']].sum().sum() * 1000
+    avg_total_spend = data[['TV Ad Budget ($)',
+                            'Radio Ad Budget ($)', 'Newspaper Ad Budget ($)']].sum(axis=1).mean() * 1000
+    avg_sales = data['Sales ($)'].mean() * 1000000
+    total_sale = data['Sales ($)'].sum() * 1000000
+    average_roi = (avg_sales - avg_total_spend) / avg_total_spend
     correlation = data.corr()['Sales ($)'][1:]
 
-    st.metric("Total Ad Spend (Millions)", f"${total_spend / 1000:.2f}")
-    st.metric("Average Sales (Millions)", f"${avg_sales:.2f}")
+    st.metric("Total Ad Spend", f"${total_spend:,.2f}")
+    st.metric("Average Ad Spend", f"${avg_total_spend:,.2f}")
+    st.metric("Total Sales", f"${total_sale:,.2f}")
+    st.metric("Average Sales", f"${avg_sales:,.2f}")
+    st.metric("Average ROI", f"{average_roi * 100:,.2f}%")
+
+# Overview Page
+if page == "Overview":
+    st.title("Ad Performance Analytics Dashboard")
+
+    # Key statistics
+    stats = data.describe().drop(columns=["ID"])
+    st.subheader("Key Statistics")
+    st.write(stats)
+
     st.write("Ad Effectiveness (Correlation with Sales):")
-    st.bar_chart(correlation)
+    st.bar_chart(correlation.drop('Sales ($)'))
 
 # 2. Ad Performance
 elif page == "Ad Performance":
@@ -50,11 +56,6 @@ elif page == "Ad Performance":
         plt.xlabel(f"{ad_type} (Thousands)")
         plt.ylabel("Sales (Millions)")
         st.pyplot(plt)
-
-    # Interaction Effects
-    st.subheader("Interaction Effects")
-    sns.heatmap(data.corr(), annot=True, cmap='coolwarm')
-    st.pyplot(plt)
 
 # 3. Predict Sales
 elif page == "Predict Sales":
@@ -98,8 +99,3 @@ elif page == "Predict Sales":
 
     # Visualization
     st.bar_chart({"Ad Budgets": [tv_budget, radio_budget, newspaper_budget], "Predicted Sales": [predicted_sales]})
-
-# 4. Download Reports
-elif page == "Download Reports":
-    st.title("Download Reports")
-    st.download_button("Download Dataset", data.to_csv(), file_name="ad_performance.csv", mime="text/csv")
