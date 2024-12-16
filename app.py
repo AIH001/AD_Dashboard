@@ -5,15 +5,20 @@ import seaborn as sns
 # Load the dataset
 data = pd.read_csv("advertising_sales.csv")
 
+# Scale the specified columns
+columns_to_scale = ['TV Ad Budget ($)', 'Radio Ad Budget ($)', 'Newspaper Ad Budget ($)']
+data[columns_to_scale] = data[columns_to_scale] * 1000  # Multiply ad budgets by 1000
+data['Sales ($)'] = data['Sales ($)'] * 1_000_000       # Multiply sales by 1,000,000
 # Ensure console displays full DataFrame
 pd.set_option('display.max_rows', None)  # Show all rows
 pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.width', 1000)  # Adjust console width
 
+
 # Calculate ROI for each channel
-data['TV ROI (%)'] = ((data['Sales ($)'] - data['TV Ad Budget ($)']) / data['TV Ad Budget ($)']) * 100
-data['Radio ROI (%)'] = ((data['Sales ($)'] - data['Radio Ad Budget ($)']) / data['Radio Ad Budget ($)']) * 100
-data['Newspaper ROI (%)'] = ((data['Sales ($)'] - data['Newspaper Ad Budget ($)']) / data['Newspaper Ad Budget ($)']) * 100
+data['TV ROI (%)'] = ((data['Sales ($)'] - data['TV Ad Budget ($)']) / data['TV Ad Budget ($)']).replace([float('inf'), -float('inf')], 0) * 100
+data['Radio ROI (%)'] = ((data['Sales ($)'] - data['Radio Ad Budget ($)']) / data['Radio Ad Budget ($)']).replace([float('inf'), -float('inf')], 0) * 100
+data['Newspaper ROI (%)'] = ((data['Sales ($)'] - data['Newspaper Ad Budget ($)']) / data['Newspaper Ad Budget ($)']).replace([float('inf'), -float('inf')], 0) * 100
 
 # Open file for writing
 with open("Advertising_Spend_Report.txt", "w") as file:

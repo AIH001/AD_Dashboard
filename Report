@@ -1,4 +1,65 @@
 Ad Analytics report
 
 The data provides insight into the ad performance for foo company. Foo
-runs tv, radio and newspapers ads.
+runs tv, radio, and newspapers ads.
+
+Advertising Sales Analysis Report
+
+This report provides insights from a dataset containing 200 advertising campaigns. Each campaign includes spending on TV, radio, and newspaper ads, along with the resulting sales figures. It also includes computed metrics such as Return on Investment (ROI) percentages for each channel. The goal is to understand how ad spending correlates with sales, identify which channels are most effective, and guide strategic ad budget allocation.
+
+Key Observations:
+
+Average Budgets & Sales:
+
+Average TV budget: $147,042
+Average Radio budget: $23,264
+Average Newspaper budget: $30,554
+Average Sales: $14.02 million
+
+Variability:
+The standard deviation for TV spend (about $85,854) is significant, indicating a wide range of investment levels across campaigns. Newspaper and radio budgets vary less dramatically but still show considerable dispersion.
+
+High Sales Maximums:
+The maximum sales figure reaches $27 million, suggesting that certain high-budget, potentially well-targeted campaigns yield exceptionally high returns.
+
+Key Correlations:
+
+TV Ad Budget & Sales: Strong positive correlation (0.78) suggests that TV ads have the most direct linear relationship with sales.
+Radio Ad Budget & Sales: Moderately strong positive correlation (0.58) indicating radio ads also contribute significantly to sales.
+Newspaper Ad Budget & Sales: Weaker positive correlation (0.23), suggesting newspaper ads have a smaller but still positive effect.
+
+Average Sales Contribution by Channel
+TV: $147,042.50 average budget
+Radio: $23,264.00 average budget
+Newspaper: $30,554.00 average budget
+While these numbers represent average budgets rather than direct "contributions," the correlation data combined with average spend suggests that TV campaigns, which are typically more expensive, tend to align with higher sales outcomes.
+
+ROI Analysis (Average ROI by Channel)
+TV ROI (%): 16,602.39%
+Radio ROI (%): 137,976.30%
+Newspaper ROI (%): 131,917.23%
+
+The ROI percentages are exceptionally high, likely due to how ROI is calculated and the scale of sales relative to ad spend. The key takeaway is the relative difference: while TV has the strongest correlation to sales, the ROI percentage for radio and newspaper can sometimes spike, possibly due to lower baseline spending and certain campaigns producing disproportionately high sales.
+This suggests that while TV correlates strongly with total sales growth, some targeted radio or newspaper campaigns yield surprisingly large returns on a relative basis. It might mean that smaller, well-placed investments in these channels can have a significant impact.
+
+Top 10 Ad Campaigns by Sales
+Looking at the top campaigns by sales, we see extremely high budgets, especially in TV and combined spending. These campaigns reached sales up to $27 million.
+
+Key Patterns Among Top Performers:
+
+Large TV Ad Budgets often accompany high sales, reinforcing the correlation noted earlier.
+Many top campaigns also mix significant radio and newspaper budgets, suggesting synergy between channels.
+Some outliers (like ID 37 and ID 129) show immense ROI in newspaper ads, implying that even a relatively small newspaper budget (like $5,000 in the case of ID 37, or $3,200 in ID 129) can combine with high TV and radio spends to produce remarkable returns.
+
+Recommendations
+Prioritize TV Advertising for Broad Reach:
+Given the strongest correlation between TV spend and sales, maintaining or increasing TV budgets can be a reliable driver of increased sales volume.
+
+Leverage Synergy with Other Channels:
+While TV is a strong driver, the correlation with radio and newspaper also suggests that a balanced mix can enhance overall sales. Even though newspaper ROI might fluctuate, it can complement TV and radio campaigns.
+
+Experiment with Targeted Radio and Newspaper Campaigns:
+High ROI percentages in some campaigns indicate that carefully chosen placements in radio or newspaper channels can significantly amplify returns. Consider segmenting markets or timing to maximize these effects.
+
+Continuous Testing and Optimization:
+These insights come from historical data. Ongoing A/B testing and market analysis can help refine allocations. Monitor how changes in spend distribution impact sales to continuously improve media strategies.

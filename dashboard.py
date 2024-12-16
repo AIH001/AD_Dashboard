@@ -54,18 +54,22 @@ if page == "Overview":
 elif page == "Ad Performance":
     st.title("Ad Performance Insights")
 
-    # Ad spending vs sales
     for ad_type in ['TV Ad Budget ($)', 'Radio Ad Budget ($)', 'Newspaper Ad Budget ($)']:
         st.write(f"**{ad_type} vs Sales**")
 
-        # Prepare data for scatter plot
-        scatter_data = [[x, y] for x, y in zip(data[ad_type], data["Sales ($)"])]  # Fixed format
+        # Prepare data for scatter plot (scaled to thousands and millions)
+        scatter_data = [[x * 1000, y * 1_000_000] for x, y in zip(data[ad_type], data["Sales ($)"])]
 
         # ECharts options for scatter plot
         options = {
             "tooltip": {
                 "trigger": "item",
-                "formatter": "Ad Spend: {c[0]:,.2f}<br>Sales: {c[1]:,.2f}",
+                "formatter": """
+                    function (params) {
+                        return `Ad Spend: ${params.value[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}K<br>
+                                Sales: ${params.value[1].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}M`;
+                    }
+                """
             },
             "xAxis": {
                 "type": "value",
@@ -78,6 +82,12 @@ elif page == "Ad Performance":
                 "name": "Sales (Millions)",
                 "nameLocation": "middle",
                 "nameGap": 40,
+            },
+            "grid": {
+                "top": "15%",
+                "left": "10%",
+                "right": "10%",
+                "bottom": "15%",
             },
             "series": [
                 {
@@ -99,6 +109,7 @@ elif page == "Ad Performance":
         st_echarts(options=options, height="400px")
 
 
+
 # 3. Predict Sales
 elif page == "Predict Sales":
     st.title("Predict Sales")
@@ -110,7 +121,7 @@ elif page == "Predict Sales":
     tv_full = st.slider(
         "TV Budget ($)",
         min_value=0.0,
-        max_value=250000.0,
+        max_value=300000.0,
         value=50000.0,
         step=1000.0,  # Set the step size
     )
@@ -130,7 +141,7 @@ elif page == "Predict Sales":
     newspaper_full = st.slider(
         "Newspaper Budget ($)",
         min_value=0.0,
-        max_value=100000.0,
+        max_value=150000.0,
         value=15000.0,
         step=1000.0,  # Set the step size
     )
@@ -165,4 +176,28 @@ elif page == "Predict Sales":
             model_coefficients["Log_Radio_Newspaper_Interaction"] * log_radio_newspaper
     )
     st.write(f"Predicted Sales: ${predicted_sales:,.2f} Million")
+# 4. Report Page
+elif page == "Report":
+    st.title("Advertising Sales Report")
+    st.divider()
 
+    # Load the report.txt file
+    try:
+        with open("Report", "r") as file:
+            report_content = file.read()
+    except FileNotFoundError:
+        report_content = "The report file could not be found. Please ensure 'report.txt' exists in the application directory."
+
+    # Display the content of the report
+    st.subheader("Report Summary")
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.text(report_content)
+
+    # Option to download the report
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.download_button(
+        label="Download Full Report",
+        data=report_content,
+        file_name="Advertising_Sales_Report.txt",
+        mime="text/plain"
+    )
